@@ -5,7 +5,7 @@ import IconI from 'react-native-vector-icons/Ionicons';
 
 import { colors } from '../../helper/color';
 
-class LoginScreen extends Component {
+class SignupScreen extends Component {
     static navigationOptions = {
         title: 'Login',
         headerStyle: {
@@ -22,13 +22,14 @@ class LoginScreen extends Component {
         this.state = {
             isLoading: false,
             email: '',
-            password: ''
+            password: '',
+            ulangPassword: ''
         };
     }
 
     _renderLogo() {
         return (
-            <Image resizeMethod='resize' source={require('./../../../assets/images/man-united.png')} style={{ height: 150, width: 150, marginBottom: 50 }} />
+            <Image resizeMethod='resize' source={require('./../../../assets/images/as-roma.png')} style={{ height: 150, width: 150, marginBottom: 50 }} />
         );
     }
 
@@ -57,11 +58,23 @@ class LoginScreen extends Component {
                         onChangeText={(text) => this.setState({ password: text })}
                     />
                 </Item>
+
+                <Item rounded style={{ marginTop: 10, backgroundColor: 'white', borderColor: 'white' }} >
+                    <IconI name='ios-shuffle' size={25} style={{ marginLeft: 20, marginTop: 4, marginRight: 10 }} />
+                    <Input 
+                        placeholder='Ulang Password' 
+                        autoCapitalize='none' 
+                        autoCorrect={false} 
+                        secureTextEntry 
+                        value={this.state.ulangPassword}
+                        onChangeText={(text) => this.setState({ ulangPassword: text })}
+                    />
+                </Item>
             </View>
         );
     }
 
-    _renderButtonLogin() {
+    _renderButtonSignup() {
         if (this.state.isLoading) {
             return (
                 <ActivityIndicator size='large' style={{ marginTop: 30 }} color={colors.white} />
@@ -73,7 +86,7 @@ class LoginScreen extends Component {
                 rounded 
                 style={{ width: '100%', justifyContent: 'center', backgroundColor: colors.yellow, marginTop: 30 }}
             >
-                <Text style={{ color: colors.black, width: '100%', textAlign: 'center' }}>LOGIN</Text>
+                <Text style={{ color: colors.black, width: '100%', textAlign: 'center' }}>SIGNUP</Text>
             </Button>
         );
     }
@@ -88,14 +101,13 @@ class LoginScreen extends Component {
 
     render() {
         return (
-            <View style={{ justifyContent: 'center', alignItems: 'center', padding: 20, backgroundColor: colors.red, flex: 1 }}>
+            <View style={{ justifyContent: 'center', alignItems: 'center', padding: 20, backgroundColor: colors.darkBlue, flex: 1 }}>
                 {this._renderLogo()}
                 {this._renderForm()}
-                {this._renderButtonLogin()}
-                {this._renderTextBelumPunyaAccount()}
+                {this._renderButtonSignup()}
             </View>
         );
     }
 }
 
-export default LoginScreen;
+export default SignupScreen;

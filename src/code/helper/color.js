@@ -1,14 +1,3 @@
-// export const colors = {
-//     yellow: '#FFEC94',
-//     red: '#FFAEAE',
-//     lightYellow: '#FFF0AA',
-//     green: '#B0E57C',
-//     lightBlue: '#B4D8E7',
-//     blue: '#56BAEC',
-//     white: '#FFFFFF',
-//     black: '#000000'
-// };
-
 export const colors = {
     yellow: '#FAD61D',
     lightBrown: '#E19720',

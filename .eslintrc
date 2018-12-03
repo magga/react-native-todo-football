@@ -3,6 +3,7 @@
     "rules": {
         "max-len": "off",
         "global-require": "off",
-        "no-mixed-spaces-and-tabs": "off"
+        "no-mixed-spaces-and-tabs": "off",
+        "no-underscore-dangle": "off"
     }
 }
