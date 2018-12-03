@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
 import { Item, Input, Button, Toast } from 'native-base';
 import IconI from 'react-native-vector-icons/Ionicons';
 
 import { colors } from '../../helper/color';
+import { FirebaseLogin } from '../../helper/firebase';
 
 class LoginScreen extends Component {
     static navigationOptions = {
@@ -13,7 +14,8 @@ class LoginScreen extends Component {
         },
         headerTitleStyle: {
             color: colors.black
-        }
+        },
+        headerBackTitle: null
     }
 
     constructor(props) {
@@ -61,6 +63,46 @@ class LoginScreen extends Component {
         );
     }
 
+    _login() {
+        const { email, password } = this.state;
+
+        if (email === '') {
+            return Toast.show({ text: 'Harap masukkan email terlebih dahulu',
+                buttonText: 'oke',
+                duration: 2500,
+                type: 'danger'
+            });
+        }
+
+        if (password === '') {
+            return Toast.show({ text: 'Harap masukkan password terlebih dahulu',
+                buttonText: 'oke',
+                duration: 2500,
+                type: 'danger'
+            });
+        }
+
+        this.setState({ isLoading: true });
+
+        FirebaseLogin(email, password)
+        .then(() => {
+            this.setState({ isLoading: false });
+            Alert.alert(
+                'BERHASIL',
+                'Login berhasil',
+                [{ text: 'okay, sir!' }]
+            );
+        })
+        .catch((error) => {
+            this.setState({ isLoading: false });
+            Alert.alert(
+                'ERROR',
+                `Terjadi kesalahan saat melakukan login, silahkan coba lagi. \n\nError : ${error.message}`,
+                [{ text: 'okay, sir!' }]
+            );
+        });
+    }
+
     _renderButtonLogin() {
         if (this.state.isLoading) {
             return (
@@ -72,6 +114,7 @@ class LoginScreen extends Component {
             <Button 
                 rounded 
                 style={{ width: '100%', justifyContent: 'center', backgroundColor: colors.yellow, marginTop: 30 }}
+                onPress={this._login.bind(this)}
             >
                 <Text style={{ color: colors.black, width: '100%', textAlign: 'center' }}>LOGIN</Text>
             </Button>
@@ -80,7 +123,11 @@ class LoginScreen extends Component {
 
     _renderTextBelumPunyaAccount() {
         return (
-            <TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    this.props.navigation.navigate('signup');
+                }}
+            >
                 <Text style={{ fontSize: 16, marginTop: 20, color: colors.white }}>Belum punya account? Daftar</Text>
             </TouchableOpacity>
         );

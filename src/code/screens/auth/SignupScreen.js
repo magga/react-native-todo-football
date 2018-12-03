@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
 import { Item, Input, Button, Toast } from 'native-base';
 import IconI from 'react-native-vector-icons/Ionicons';
 
 import { colors } from '../../helper/color';
+import { FirebaseSignup } from '../../helper/firebase';
 
 class SignupScreen extends Component {
     static navigationOptions = {
-        title: 'Login',
+        title: 'Signup',
         headerStyle: {
-            backgroundColor: colors.yellow
+            backgroundColor: colors.softLightBrown
         },
         headerTitleStyle: {
             color: colors.black
-        }
+        },
+        headerTintColor: colors.black
     }
 
     constructor(props) {
@@ -74,6 +76,55 @@ class SignupScreen extends Component {
         );
     }
 
+    _signup() {
+        const { email, password, ulangPassword } = this.state;
+
+        if (email === '') {
+            return Toast.show({ text: 'Harap masukkan email terlebih dahulu',
+                buttonText: 'oke',
+                duration: 2500,
+                type: 'danger'
+            });
+        }
+
+        if (password === '') {
+            return Toast.show({ text: 'Harap masukkan password terlebih dahulu',
+                buttonText: 'oke',
+                duration: 2500,
+                type: 'danger'
+            });
+        }
+
+        if (password !== ulangPassword) {
+            return Toast.show({ text: 'Password yang anda masukkan tidak sesuai',
+                buttonText: 'oke',
+                duration: 2500,
+                type: 'danger'
+            });
+        }
+
+        this.setState({ isLoading: true });
+
+        // DO SIGNUP
+        FirebaseSignup(email, password)
+        .then(() => {
+            this.setState({ isLoading: false });
+            Alert.alert(
+                'BERHASIL',
+                'Signup berhasil dilakukan',
+                [{ text: 'okay, sir!' }]
+            );
+        })
+        .catch((error) => {
+            this.setState({ isLoading: false });
+            Alert.alert(
+                'ERROR',
+                `Terjadi kesalahan saat melakukan signup, silahkan coba lagi. \n\nError : ${error.message}`,
+                [{ text: 'okay, sir!' }]
+            );
+        });
+    }
+
     _renderButtonSignup() {
         if (this.state.isLoading) {
             return (
@@ -85,6 +136,7 @@ class SignupScreen extends Component {
             <Button 
                 rounded 
                 style={{ width: '100%', justifyContent: 'center', backgroundColor: colors.yellow, marginTop: 30 }}
+                onPress={this._signup.bind(this)}
             >
                 <Text style={{ color: colors.black, width: '100%', textAlign: 'center' }}>SIGNUP</Text>
             </Button>
